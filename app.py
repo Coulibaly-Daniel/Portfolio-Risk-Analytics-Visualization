@@ -29,7 +29,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📊 Portfolio Risk Analytics")
+st.title("📊 SUIVI DE RISQUES DE PORTEFEUILLE")
 
 st.markdown("""
 Bienvenue dans notre application d'analyse de portefeuille.
@@ -60,18 +60,18 @@ try:
     # 3. COMPOSITION DU PORTEFEUILLE
     # ========================================================
 
-    st.header("1. Portfolio Composition")
+    st.header("1. Composition du portefeuille")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Number of Assets", len(portfolio))
+        st.metric("Nombre d'actifs", len(portfolio))
 
     with col2:
-        st.metric("Number of Observations", len(prices_eur))
+        st.metric("Nombre d'observations", len(prices_eur))
 
     with col3:
-        st.metric("Number of Stocks", prices_eur.shape[1])
+        st.metric("Nombre d'actions", prices_eur.shape[1])
 
     st.dataframe(portfolio, use_container_width=True)
 
@@ -100,7 +100,7 @@ try:
         portfolio_returns
     )
 
-    st.header("2. Portfolio Performance")
+    st.header("2. Performance du Portefeuille")
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -112,27 +112,27 @@ try:
 
     with col2:
         st.metric(
-            "Average Daily Return",
+            "Rendement journalier moyen",
             f"{average_daily_return:.2%}"
         )
 
     with col3:
         st.metric(
-            "Daily Volatility",
+            "volatilité journalière",
             f"{daily_volatility:.2%}"
         )
 
     with col4:
         st.metric(
-            "Annualized Volatility",
+            "Volatilité annualisée",
             f"{annualized_volatility:.2%}"
         )
 
-    st.subheader("Benchmark Historical Prices")
+    st.subheader("Prix historiques du Benchmark")
     st.dataframe(benchmark_prices.tail())
 
     # Comparaison avec le benchmark
-    st.subheader("Portfolio vs Benchmark Performance")
+    st.subheader("Portefeuille vs Performance du Benchmark ")
 
     fig_benchmark = plot_portfolio_vs_benchmark(
         portfolio_returns,
@@ -152,7 +152,7 @@ try:
     # 6. INDICATEURS DE RISQUE
     # ========================================================
 
-    st.header("3. Market Risk Analysis")
+    st.header("3. Analyse des risques de marché")
 
     # VaR et CVaR
     var_95, cvar_95, var_99, cvar_99 = calculate_var_cvar(
@@ -165,7 +165,7 @@ try:
     )
 
     # Graphique Drawdown
-    st.subheader("Portfolio Drawdown Evolution")
+    st.subheader("Evolution du Drawdown du portefeuille")
 
     fig_drawdown = plot_portfolio_drawdown(drawdown)
 
@@ -180,7 +180,7 @@ try:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Portfolio Sector Allocation")
+        st.subheader("Allocation Sectorielle du Portefeuille ")
 
         fig_sector = plot_sector_allocation(portfolio)
 
@@ -191,7 +191,7 @@ try:
     )
 
     with col2:
-        st.subheader("Portfolio Geographic Allocation")
+        st.subheader("Allocation Géographique du Portefeuille ")
 
         fig_geo = plot_geographic_allocation(portfolio)
 
