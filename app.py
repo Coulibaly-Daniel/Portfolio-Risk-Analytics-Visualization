@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -270,7 +269,6 @@ try:
 
         st.subheader("Rapport d'analyse du portefeuille")
         st.markdown(ai_data["commentary"])
-
     else:
         st.info("Aucun commentaire IA disponible pour le moment.")
 
@@ -279,5 +277,4 @@ except FileNotFoundError as error:
 
 except Exception as error:
     st.error(f"Une erreur est survenue : {error}")
-
 
