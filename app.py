@@ -20,7 +20,7 @@ from modules.visualization import (
     plot_geographic_allocation,
     plot_risk_contribution
 )
-from modules.llm_assistant import generate_ai_commentary
+#from modules.llm_assistant import generate_ai_commentary
 
 # ============================================================
 # 1. CONFIGURATION DE L'APPLICATION
