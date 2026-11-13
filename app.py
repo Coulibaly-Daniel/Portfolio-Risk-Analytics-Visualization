@@ -2,6 +2,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import json
+from pathlib import Path
 
 from modules.portfolio import (load_data, calculate_portfolio, load_benchmark)
 from modules.performance import calculate_performance
@@ -18,6 +20,7 @@ from modules.visualization import (
     plot_geographic_allocation,
     plot_risk_contribution
 )
+from modules.llm_assistant import generate_ai_commentary
 
 # ============================================================
 # 1. CONFIGURATION DE L'APPLICATION
@@ -250,6 +253,74 @@ try:
         use_container_width=True,
         key="risk_contribution_chart"
 )
+    
+    st.header("4. Analyse intelligente du portefeuille")
+
+    st.markdown(
+    "Consultez l'interprétation des indicateurs de performance "
+    "et de risque générée par l'intelligence artificielle."
+)
+
+
+    commentary_path = Path("data/ai_commentary.json")
+
+    if commentary_path.exists():
+
+        with open(commentary_path, "r", encoding="utf-8") as file:
+            ai_data = json.load(file)
+
+        st.markdown(ai_data["commentary"])
+
+    else:
+        st.info("Aucun commentaire IA disponible pour le moment.")
+
+    # Transmission des indicateurs calculés par Python
+    metrics = {
+        "Performance totale": f"{total_performance:.2%}",
+        "Rendement journalier moyen": f"{average_daily_return:.2%}",
+        "Volatilité journalière": f"{daily_volatility:.2%}",
+        "Volatilité annualisée": f"{annualized_volatility:.2%}",
+        "VaR 95%": f"{var_95:.2%}",
+        "CVaR 95%": f"{cvar_95:.2%}",
+        "VaR 99%": f"{var_99:.2%}",
+        "CVaR 99%": f"{cvar_99:.2%}",
+        "Maximum Drawdown": f"{max_drawdown:.2%}",
+        "Tracking Error journalière": f"{daily_te:.2%}",
+        "Tracking Error annualisée": f"{annualized_te:.2%}"
+    }
+
+    if st.button("Générer l'analyse IA"):
+
+        with st.spinner("Qwen 2.5 analyse les indicateurs..."):
+
+            try:
+                commentary = generate_ai_commentary(metrics)
+
+                st.session_state["ai_commentary"] = commentary
+
+            except Exception as error:
+                st.error(f"Erreur lors de la génération : {error}")
+
+    # Affichage du commentaire
+    if "ai_commentary" in st.session_state:
+
+        st.subheader("Rapport d'analyse du portefeuille")
+
+        st.markdown(st.session_state["ai_commentary"])
+
+        st.header("4. Analyse intelligente du portefeuille")
+
+    commentary_path = Path("data/ai_commentary.json")
+
+    if commentary_path.exists():
+
+        with open(commentary_path, "r", encoding="utf-8") as file:
+            ai_data = json.load(file)
+
+        st.markdown(ai_data["commentary"])
+
+    else:
+        st.warning("Aucune analyse IA disponible.")
 
 except FileNotFoundError as error:
     st.error(f"Fichier introuvable : {error}")
